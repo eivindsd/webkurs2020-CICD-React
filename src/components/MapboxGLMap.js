@@ -8,7 +8,7 @@ const styles = {
   position: "absolute"
 };
 
-const MapboxGLMap = () => {
+const MapboxGLMap = (props) => {
   const [map, setMap] = useState(null);
   const mapContainer = useRef(null);
 
@@ -17,19 +17,19 @@ const MapboxGLMap = () => {
     const initializeMap = ({ setMap, mapContainer }) => {
       const map = new mapboxgl.Map({
         container: mapContainer.current,
-        style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
-        center: [10.408773,63.422091],
+        style: "mapbox://styles/mapbox/"+props.theme, // stylesheet location
+        center: props.place,
         zoom: 10
       });
 
-      map.on("load", () => {
+      map.on("click", () => {
         setMap(map);
         map.resize();
       });
     };
 
     if (!map) initializeMap({ setMap, mapContainer });
-  }, [map]);
+  }, [map, props.theme]);
 
   return <div ref={el => (mapContainer.current = el)} style={styles} />;
 };
